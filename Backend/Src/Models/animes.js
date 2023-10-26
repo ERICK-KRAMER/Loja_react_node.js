@@ -5,4 +5,4 @@ const Animes = mongoose.model('Anime', {
     url_image: String,
 })
 
-module.exports = Animes
+module.exports = Animes;
