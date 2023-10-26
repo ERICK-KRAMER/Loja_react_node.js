@@ -1,5 +1,4 @@
 const Products = require('../Models/Products')
-const router = require('express').Router();
 
 exports.getProducts = async (req, res) => {
     try {
