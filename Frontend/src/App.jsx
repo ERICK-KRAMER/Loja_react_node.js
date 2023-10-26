@@ -1,35 +1,103 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from "axios";
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const [formData, setFormData] = useState({
+    name: "",
+    brand: "",
+    model: "",
+    url_image: "",
+    description: "",
+    value: 0,
+    stock: 0,
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:3220/products/create", formData);
+      console.log("Data sent successfully");
+    } catch (error) {
+      console.error("Something went wrong", error);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <div>
+          <label> Nome do Produto: </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label> Marca do produto: </label>
+          <input
+            type="text"
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+          />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div>
+        <label> Modelo: </label>
+        <input
+          type="text"
+          name="model"
+          value={formData.model}
+          onChange={handleChange}
+        />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <div>
+        <label> Url da imagem do produto: </label>
+        <input
+          type="url"
+          name="url_image"
+          value={formData.url_image}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label> Descrição: </label>
+        <input
+          type="text"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label> Valor: </label>
+        <input
+          type="number"
+          name="value"
+          value={formData.value}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label> Quantidade em Estoque: </label>
+        <input
+          type="number"
+          name="stock"
+          value={formData.stock}
+          onChange={handleChange}
+        />
+      </div>
+      <button type="submit">Enviar</button>
+    </form>
+  );
 }
-
-export default App
