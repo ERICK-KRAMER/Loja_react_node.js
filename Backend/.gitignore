@@ -1,0 +1,4 @@
+# Ignorar o arquivo .env
+.env
+# Ignorar a pasta node_modules (geralmente é uma boa prática)
+node_modules
