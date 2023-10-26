@@ -15,8 +15,8 @@ export function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3220/products/create", formData);
-      console.log("Data sent successfully");
+      const response = await axios.post("http://localhost:3220/products/create", formData);
+      console.log("Data sent successfully", response.data.product);
     } catch (error) {
       console.error("Something went wrong", error);
     }
@@ -31,6 +31,9 @@ export function App() {
   };
 
   return (
+
+    <>
+    <h1>adicionando produtos no banco de dados</h1>
     <form onSubmit={handleSubmit}>
       <div>
         <div>
@@ -99,5 +102,6 @@ export function App() {
       </div>
       <button type="submit">Enviar</button>
     </form>
+    </>
   );
 }
