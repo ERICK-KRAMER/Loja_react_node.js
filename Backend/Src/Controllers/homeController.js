@@ -1,4 +1,4 @@
-const Anime = require('../Models/animes')
+const Anime = require('../Models/Animes')
 
 exports.read = async(req, res) => {
     try {

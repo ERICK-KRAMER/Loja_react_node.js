@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const Products = mongoose.model('Products', {
     name: String,
+    brand: String,
+    model: String,
     url_image: String,
+    description: String,
     value: Number,
     stock: Number,
 });
