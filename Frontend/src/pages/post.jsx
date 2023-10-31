@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 
-export function App() {
+export function Post() {
   const [formData, setFormData] = useState({
     name: "",
     brand: "",
     model: "",
+    type:"",
     url_image: "",
     description: "",
     value: 0,
@@ -61,6 +62,15 @@ export function App() {
           type="text"
           name="model"
           value={formData.model}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label> Tipo: </label>
+        <input
+          type="text"
+          name="type"
+          value={formData.type}
           onChange={handleChange}
         />
       </div>

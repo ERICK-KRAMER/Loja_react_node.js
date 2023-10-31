@@ -10,7 +10,7 @@ exports.getProducts = async (req, res) => {
 }
 
 exports.createProducts = async(req, res) => {
-    const { name, brand, model, url_image, description, value, stock } = req.body;
+    const { name, brand, model, type, url_image, description, value, stock } = req.body;
 
     if(!name || !url_image || !value || !stock) {
         res.status(422).json( { message: "É necessario adicionar preencher todos os campos: 'name, url_image, value e stock'! "})
@@ -20,6 +20,7 @@ exports.createProducts = async(req, res) => {
             name,
             brand,
             model,
+            type,
             url_image,
             description,
             value,
@@ -47,12 +48,13 @@ exports.deleteProducts = async(req, res) => {
 
 exports.updateProduct = async(req, res) => {
     const { id } = req.params;
-    const { name, brand, model,  url_image, description, value, stock } = req.body;
+    const { name, brand, model, type,  url_image, description, value, stock } = req.body;
     try {
         const updateProduct = await Products.findByIdAndUpdate(id, {
             name,
             brand,
             model,
+            type,
             url_image,
             description,
             value,
