@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
+import { Button } from '../../components/container'
+import { InputStyled } from "../../components/Header";
+import style from '../../styles/post.module.css'
 
 export function Post() {
   const [formData, setFormData] = useState({
@@ -18,6 +21,7 @@ export function Post() {
     try {
       const response = await axios.post("http://localhost:3220/products/create", formData);
       console.log("Data sent successfully", response.data.product);
+      window.open('/', '_self')
     } catch (error) {
       console.error("Something went wrong", error);
     }
@@ -32,14 +36,13 @@ export function Post() {
   };
 
   return (
-
-    <>
-    <h1>adicionando produtos no banco de dados</h1>
+    <div className={style.container}>
+    <h1>Adicionando produtos no banco de dados</h1>
     <form onSubmit={handleSubmit}>
       <div>
         <div>
           <label> Nome do Produto: </label>
-          <input
+          <InputStyled
             type="text"
             name="name"
             value={formData.name}
@@ -48,7 +51,7 @@ export function Post() {
         </div>
         <div>
           <label> Marca do produto: </label>
-          <input
+          <InputStyled
             type="text"
             name="brand"
             value={formData.brand}
@@ -58,7 +61,7 @@ export function Post() {
       </div>
       <div>
         <label> Modelo: </label>
-        <input
+        <InputStyled
           type="text"
           name="model"
           value={formData.model}
@@ -67,7 +70,7 @@ export function Post() {
       </div>
       <div>
         <label> Tipo: </label>
-        <input
+        <InputStyled
           type="text"
           name="type"
           value={formData.type}
@@ -76,7 +79,7 @@ export function Post() {
       </div>
       <div>
         <label> Url da imagem do produto: </label>
-        <input
+        <InputStyled
           type="url"
           name="url_image"
           value={formData.url_image}
@@ -85,16 +88,16 @@ export function Post() {
       </div>
       <div>
         <label> Descrição: </label>
-        <input
-          type="text"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
+        <textarea 
+          name="description" 
+          rows="4" cols="50" 
+          value={formData.description} 
+          onChange={handleChange}>
+        </textarea>
       </div>
       <div>
         <label> Valor: </label>
-        <input
+        <InputStyled
           type="number"
           name="value"
           value={formData.value}
@@ -103,15 +106,15 @@ export function Post() {
       </div>
       <div>
         <label> Quantidade em Estoque: </label>
-        <input
+        <InputStyled
           type="number"
           name="stock"
           value={formData.stock}
           onChange={handleChange}
         />
       </div>
-      <button type="submit">Enviar</button>
+      <Button type="submit">Enviar</Button>
     </form>
-    </>
+    </div>
   );
 }

@@ -1,0 +1,12 @@
+.img {
+    background-size: cover;
+    background-position: top center;
+    width: 120px;
+    height: 50px;
+}
+.Container {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+}

@@ -9,12 +9,13 @@ exports.getProducts = async (req, res) => {
     }
 }
 
-exports.createProducts = async(req, res) => {
+exports.createProducts = async (req, res) => {
     const { name, brand, model, type, url_image, description, value, stock } = req.body;
 
-    if(!name || !url_image || !value || !stock) {
-        res.status(422).json( { message: "É necessario adicionar preencher todos os campos: 'name, url_image, value e stock'! "})
+    if (!name || !url_image || !value || !stock) {
+        res.status(422).json({ message: "É necessário preencher todos os campos!" });
     }
+
     try {
         const newProduct = new Products({
             name,
@@ -26,12 +27,13 @@ exports.createProducts = async(req, res) => {
             value,
             stock
         });
-        await newProduct.save()
+        await newProduct.save();
         res.status(201).json({ message: 'Produto adicionado com sucesso', product: newProduct });
     } catch (error) {
-        res.status(500).json({ error: error });
+        res.status(500).json({ error: error.message });
     }
 };
+
 
 exports.deleteProducts = async(req, res) => {
     const { id } = req.params;
