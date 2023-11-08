@@ -66,7 +66,7 @@ export function Put() {
       
           if (response.ok) {
             const data = await response.json();
-            console.log("Produto atualizado:", data);
+            alert(`${data.message}`)
             window.open("/get", '_self')
           } else {
             console.error("Erro ao atualizar o produto.");

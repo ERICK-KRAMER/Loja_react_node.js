@@ -12,3 +12,4 @@ const Products = mongoose.model('Products', {
 });
 
 module.exports = Products;
+

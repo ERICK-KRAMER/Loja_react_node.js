@@ -1,5 +1,6 @@
 const Products = require('../Models/Products')
 
+
 exports.getProducts = async (req, res) => {
     try {
         const products = await Products.find();
@@ -11,11 +12,14 @@ exports.getProducts = async (req, res) => {
 
 exports.createProducts = async (req, res) => {
     const { name, brand, model, type, url_image, description, value, stock } = req.body;
+    const existProduct = await Products.findOne({ model, type })
 
-    if (!name || !url_image || !value || !stock) {
-        res.status(422).json({ message: "É necessário preencher todos os campos!" });
+    if(existProduct){
+        return res.json({ message: 'Já existe esse produto no catálogo'})
     }
-
+    if(!name || !model || !brand || !type) {
+        return res.status(422).json({ message: 'Preencha os compos antes antes de submeter o formulário!'})
+    }
     try {
         const newProduct = new Products({
             name,
@@ -30,9 +34,10 @@ exports.createProducts = async (req, res) => {
         await newProduct.save();
         res.status(201).json({ message: 'Produto adicionado com sucesso', product: newProduct });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: 'Erro ao adicionar um produto', error });
     }
 };
+
 
 
 exports.deleteProducts = async(req, res) => {
@@ -65,7 +70,7 @@ exports.updateProduct = async(req, res) => {
         if(!updateProduct){
             return res.status(404).json({ error: 'registro nao encontrado '});
         }
-        res.status(200).json(updateProduct)
+        res.status(200).json({ message: 'O produto foi atualizado', product: updateProduct })
     } catch (error) {
         res.status(500).json({ message: "Não foi possivel localizar esse produto" })
     }

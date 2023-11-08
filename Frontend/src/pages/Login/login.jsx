@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react"
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import style from  '../../styles/formStyle.module.css'
+import style from  '../../styles/formStyle.module.css';
+import axios from 'axios'
 
 export function Login() {
 
@@ -9,6 +10,7 @@ export function Login() {
     const [passwordLogin, setPasswordLogin] = useState('');
     const [emailCad, setEmailCad] = useState('');
     const [PasswordCad, setPasswordCad] = useState('');
+    const [users, setUsers] = useState([]);
 
     const buttonRefLog = useRef(null);
     const buttonRefCad = useRef(null);
@@ -28,12 +30,42 @@ export function Login() {
         }
     }, [emailCad, PasswordCad]);
 
-    function handleClickLogin(e) {
+    async function handleClickLogin(e) {
         e.preventDefault();
+        try {
+            const responser = await axios.get('http://localhost:3220/users');
+            setUsers(responser.data);
+            console.log(responser.data)
+            Autorization()
+            if(Autorization() === true){
+                window.open('/get', '_self');
+                return alert("Usuário autorizado");
+            } else {
+                return alert("Usuário não encontrado ou não autorizado.");
+            }
+        } catch (error) {
+            console.log({ error: error })
+        }
     }
-    function handleClickCad(e) {
+    async function handleClickCad(e) {
         e.preventDefault();
+        try {
+            const responser = await axios.post('http://localhost:3220/users/create', { email: emailCad, password: PasswordCad });
+            alert(responser.data.message)
+        } catch (error) {
+            alert(error.response.data.message)
+        }
     }
+    const Autorization = () => {
+        const findEmail = users.find(user => user.email === emailLogin);
+        const findPassword = users.find(user => user.password === passwordLogin);
+        if (findEmail && findPassword) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     return(
         <div className={style.container}>
         
@@ -43,7 +75,6 @@ export function Login() {
                     <TextField 
                      fullWidth 
                      label="e-mail" 
-                     id="fullWidth" 
                      onChange={(e)=>{setEmailLogin(e.target.value)}}
                      value={emailLogin}
                     />
@@ -52,7 +83,6 @@ export function Login() {
                     <TextField 
                      fullWidth 
                      label="password"  
-                     id="fullWidth"
                      type="password"
                      onChange={(e)=>{setPasswordLogin(e.target.value)}}
                      value={passwordLogin}
@@ -76,7 +106,6 @@ export function Login() {
                     <TextField 
                      fullWidth 
                      label="e-mail" 
-                     id="fullWidth" 
                      onChange={(e)=>{setEmailCad(e.target.value)}}
                      value={emailCad}
                     />
@@ -86,7 +115,6 @@ export function Login() {
                      fullWidth 
                      label="password"
                      type="password" 
-                     id="fullWidth" 
                      onChange={(e)=>{setPasswordCad(e.target.value)}}
                      value={PasswordCad}
                     />

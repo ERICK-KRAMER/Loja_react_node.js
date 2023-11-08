@@ -44,7 +44,8 @@ export function Get() {
     e.preventDefault();
     try {
       const removeItem = await axios.delete(`http://localhost:3220/products/delete/${id}`)
-      alert({ message: "O produto foi removido com sucesso!", removeItem});
+      alert(`${removeItem.data.message}, ${removeItem.data.product.model}`);
+      console.log(removeItem.data.product.model)
       window.open('/get', '_self');
     } catch (error) {
       console.log({ message: error })

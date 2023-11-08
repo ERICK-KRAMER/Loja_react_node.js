@@ -16,16 +16,20 @@ export function Post() {
     stock: 0,
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3220/products/create", formData);
-      console.log("Data sent successfully", response.data.product);
-      window.open('/', '_self')
+      const response = await axios.post(`http://localhost:3220/products/create`, formData);
+      console.log(response.data) 
+      if(response.data.message === 'Já existe esse produto no catálogo'){
+        return alert(response.data.message)
+      }
+      alert(`${response.data.message} , produto: ${response.data.product.model}`); 
+      window.open('/get', '_self');
     } catch (error) {
-      console.error("Something went wrong", error);
+      alert(`${error.response.data.message}`);
     }
-  };
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
