@@ -11,6 +11,8 @@ export function Login() {
     const [emailCad, setEmailCad] = useState('');
     const [PasswordCad, setPasswordCad] = useState('');
     const [users, setUsers] = useState([]);
+    const [error, setError] = useState('')
+    const [isErrorVisible, setIsErrorVisible] = useState(false)
 
     const buttonRefLog = useRef(null);
     const buttonRefCad = useRef(null);
@@ -35,27 +37,31 @@ export function Login() {
         try {
             const responser = await axios.get('http://localhost:3220/users');
             setUsers(responser.data);
-            console.log(responser.data)
-            Autorization()
-            if(Autorization() === true){
+            if (Autorization()) {
                 window.open('/get', '_self');
-                return alert("Usuário autorizado");
             } else {
-                return alert("Usuário não encontrado ou não autorizado.");
+                setError("Usuário não encontrado ou não autorizado.");
+                setIsErrorVisible(true);
+                setTimeout(() => {
+                    setIsErrorVisible(false);
+                }, 2000);
             }
+        } catch (error) {
+            alert('Algo de errado nao está certo, tente novamente mais tarde!')
+            throw error;
+        }
+    }
+    
+    const handleClickCad = async(e) => {
+        e.preventDefault();
+        try {
+            const newCad = await axios.post('http://localhost:3220/users/create', { email: emailCad, password: PasswordCad });
+            console.log('um novo usuario foi cadastrado', newCad);
         } catch (error) {
             console.log({ error: error })
         }
     }
-    async function handleClickCad(e) {
-        e.preventDefault();
-        try {
-            const responser = await axios.post('http://localhost:3220/users/create', { email: emailCad, password: PasswordCad });
-            alert(responser.data.message)
-        } catch (error) {
-            alert(error.response.data.message)
-        }
-    }
+    
     const Autorization = () => {
         const findEmail = users.find(user => user.email === emailLogin);
         const findPassword = users.find(user => user.password === passwordLogin);
@@ -69,8 +75,8 @@ export function Login() {
     return(
         <div className={style.container}>
         
-              <form action="/verification/log" method="post" className={style.content_form_log}>
-            <h1>Login</h1>
+              <form action="/users" method="get" className={style.content_form_log}>
+                <h1>Login</h1>
                 <div className="input">
                     <TextField 
                      fullWidth 
@@ -88,6 +94,11 @@ export function Login() {
                      value={passwordLogin}
                     />
                 </div>
+                <small
+                  className="error" 
+                  style={{ display: isErrorVisible ? 'block' : 'none', color: "red"}}>
+                  {error}
+                </small>
                 <div className="btn">
                     <Button 
                      variant="contained" 
@@ -100,7 +111,7 @@ export function Login() {
                 </div>
               </form>
 
-              <form action="/verification/cad" method="post" className={style.content_form_cad}>
+              <form action="/users/create" method="post" className={style.content_form_cad}>
                 <h1>Cadastro</h1>
                 <div className="input">
                     <TextField 

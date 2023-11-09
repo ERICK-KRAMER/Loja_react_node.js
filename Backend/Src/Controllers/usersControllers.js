@@ -1,3 +1,4 @@
+const { model } = require('mongoose')
 const users = require('../Models/users')
 
 exports.getUsers = async (req, res) => {
